@@ -7,19 +7,27 @@ public class EnemyPooler : MonoBehaviour
     public GameObject enemyPrefab;
     public int poolSize = 10;
     public float spawnInterval = 1.0f;
+    public Transform minSpawn;
+    public Transform maxSpawn;
 
     private Queue<GameObject> pool = new Queue<GameObject>();
     private float spawnTimer = 0.0f;
-    
-    
-    public Transform minSpawn, maxSpawn;
 
     private Transform target;
-    
 
     // Start is called before the first frame update
     void Start()
     {
+        target = PlayerHealthController.instance.transform;
+        if (minSpawn == null)
+        {
+            minSpawn = transform.Find("MinSpawn");
+        }
+        if (maxSpawn == null)
+        {
+            maxSpawn = transform.Find("MaxSpawn");
+        }
+
         // Create initial pool
         for (int i = 0; i < poolSize; i++)
         {
@@ -27,14 +35,19 @@ public class EnemyPooler : MonoBehaviour
             enemy.SetActive(false);
             pool.Enqueue(enemy);
         }
-
-        target = PlayerHealthController.instance.transform;
-
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Update the positions of the minSpawn and maxSpawn to follow the player
+        if (target != null)
+        {
+            minSpawn.position = target.position + new Vector3(-11f, -7f, 0f);
+            maxSpawn.position = target.position + new Vector3(11f, 7f, 0f);
+            transform.position = target.position;
+        }
+
         spawnTimer += Time.deltaTime;
 
         // If it's time to spawn a new enemy, get one from the pool and activate it
@@ -46,15 +59,14 @@ public class EnemyPooler : MonoBehaviour
             enemy.SetActive(true);
         }
     }
-    
-    // Trying to Set Spawn Boundaries
 
+    // Select a random spawn point within the minSpawn and maxSpawn boundaries
     public Vector3 SelectSpawnPoint()
     {
         Vector3 spawnPoint = Vector3.zero;
 
         bool spawnVerticalEdge = Random.Range(0f, 1f) > .5f;
-        
+
         if (spawnVerticalEdge)
         {
             spawnPoint.y = Random.Range(minSpawn.position.y, maxSpawn.position.y);
@@ -81,13 +93,10 @@ public class EnemyPooler : MonoBehaviour
                 spawnPoint.y = minSpawn.position.y;
             }
         }
-        
+
         return spawnPoint;
     }
 
-    // Trying to Set Spawn Boundaries
-    
-    
     // Get an enemy from the pool
     public GameObject GetEnemy()
     {
