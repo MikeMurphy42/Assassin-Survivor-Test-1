@@ -9,20 +9,22 @@ public class EnemyPooler : MonoBehaviour
     public float spawnInterval = 1.0f;
     public Transform minSpawn;
     public Transform maxSpawn;
+    public float maxDistanceFromPlayer = 20f;
 
-    private Queue<GameObject> pool = new Queue<GameObject>();
+    private List<GameObject> pooledEnemies = new List<GameObject>();
     private float spawnTimer = 0.0f;
-
     private Transform target;
 
     // Start is called before the first frame update
     void Start()
     {
         target = PlayerHealthController.instance.transform;
+
         if (minSpawn == null)
         {
             minSpawn = transform.Find("MinSpawn");
         }
+
         if (maxSpawn == null)
         {
             maxSpawn = transform.Find("MaxSpawn");
@@ -33,7 +35,7 @@ public class EnemyPooler : MonoBehaviour
         {
             GameObject enemy = Instantiate(enemyPrefab, SelectSpawnPoint(), transform.rotation);
             enemy.SetActive(false);
-            pool.Enqueue(enemy);
+            pooledEnemies.Add(enemy);
         }
     }
 
@@ -46,6 +48,15 @@ public class EnemyPooler : MonoBehaviour
             minSpawn.position = target.position + new Vector3(-11f, -7f, 0f);
             maxSpawn.position = target.position + new Vector3(11f, 7f, 0f);
             transform.position = target.position;
+        }
+
+        // Deactivate enemies that are too far from the player
+        foreach (GameObject enemy in pooledEnemies)
+        {
+            if (enemy.activeSelf && Vector3.Distance(enemy.transform.position, target.position) > maxDistanceFromPlayer)
+            {
+                enemy.SetActive(false);
+            }
         }
 
         spawnTimer += Time.deltaTime;
@@ -100,22 +111,20 @@ public class EnemyPooler : MonoBehaviour
     // Get an enemy from the pool
     public GameObject GetEnemy()
     {
-        if (pool.Count == 0)
+        foreach (GameObject enemy in pooledEnemies)
         {
-            // If the pool is empty, create a new enemy
-            GameObject enemy = Instantiate(enemyPrefab, SelectSpawnPoint(), transform.rotation);
-            pool.Enqueue(enemy);
+            if (!enemy.activeSelf)
+            {
+                enemy.transform.position = SelectSpawnPoint();
+                enemy.SetActive(true);
+                return enemy;
+            }
         }
 
-        GameObject pooledEnemy = pool.Dequeue();
-        pooledEnemy.SetActive(true);
-        return pooledEnemy;
-    }
-
-    // Return an enemy to the pool
-    public void ReturnEnemy(GameObject enemy)
-    {
-        enemy.SetActive(false);
-        pool.Enqueue(enemy);
+        // If all enemies are active, create a new one
+        GameObject newEnemy = Instantiate(enemyPrefab, SelectSpawnPoint(), transform.rotation);
+        pooledEnemies.Add(newEnemy);
+        return newEnemy;
     }
 }
+
