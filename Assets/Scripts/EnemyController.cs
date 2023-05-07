@@ -14,11 +14,12 @@ public class EnemyController : MonoBehaviour
     public float hitWaitTime = 1f;
     private float hitCounter;
     
+    
     // Start is called before the first frame update
     void Start()
     {
-        target = FindObjectOfType<PlayerController>().transform;
-        
+        //target = FindObjectOfType<PlayerController>().transform;
+        target = PlayerHealthController.instance.transform;
     }
 
     // Update is called once per frame

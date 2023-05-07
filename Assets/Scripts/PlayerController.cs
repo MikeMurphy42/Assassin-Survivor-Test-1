@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 0;
     public Animator anim;
     
+    public Transform childTransform;
+
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -40,10 +43,28 @@ public class PlayerController : MonoBehaviour
         if (moveInput.x > 0)
         {
             transform.localScale = new Vector3(1, 1, 1); // flip right
+            
+            // For Child
+            Vector3 childScale = childTransform.localScale;
+            childScale.x = Mathf.Abs(childScale.x);
+            childTransform.localScale = childScale;
         }
         else if (moveInput.x < 0)
         {
             transform.localScale = new Vector3(-1, 1, 1); // flip left
+            
+            // For Child
+            Vector3 childScale = childTransform.localScale;
+            childScale.x = -Mathf.Abs(childScale.x);
+            childTransform.localScale = childScale;
         }
+        
+        
+        
+        
+        
     }
 }
+
+
+
