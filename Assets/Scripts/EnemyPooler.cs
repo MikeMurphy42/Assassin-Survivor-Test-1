@@ -7,18 +7,19 @@ public class EnemyPooler : MonoBehaviour
     public GameObject enemyPrefab;
     public int poolSize = 10;
     public float spawnInterval = 1.0f;
+    public float initialDelay = 5.0f; // new variable to set initial delay
     public Transform minSpawn;
     public Transform maxSpawn;
     public float maxDistanceFromPlayer = 20f;
     public float maxDistanceCheckInterval = 0.5f;
-    public float initialSpawnDelay = 0f; // new variable for the initial delay
+    public int maxActiveEnemies = 5;
 
     private List<GameObject> pooledEnemies = new List<GameObject>();
     private float spawnTimer = 0.0f;
     private Transform target;
     private float maxDistanceCheckTimer = 0f;
+    private int activeEnemyCount = 0;
 
-    // Start is called before the first frame update
     void Start()
     {
         target = PlayerHealthController.instance.transform;
@@ -33,25 +34,9 @@ public class EnemyPooler : MonoBehaviour
             maxSpawn = transform.Find("MaxSpawn");
         }
 
-        // Wait for the initial spawn delay
-        StartCoroutine(SpawnEnemiesDelayed());
-
+        StartCoroutine(SpawnEnemies()); // start the coroutine to spawn enemies
     }
 
-    IEnumerator SpawnEnemiesDelayed()
-    {
-        yield return new WaitForSeconds(initialSpawnDelay);
-
-        // Create initial pool
-        for (int i = 0; i < poolSize; i++)
-        {
-            GameObject enemy = Instantiate(enemyPrefab, SelectSpawnPoint(), transform.rotation);
-            enemy.SetActive(false);
-            pooledEnemies.Add(enemy);
-        }
-    }
-
-    // Update is called once per frame
     void Update()
     {
         // Update the positions of the minSpawn and maxSpawn to follow the player
@@ -75,23 +60,42 @@ public class EnemyPooler : MonoBehaviour
                 if (enemy.activeSelf && Vector3.Distance(enemy.transform.position, target.position) > maxDistanceFromPlayer)
                 {
                     enemy.SetActive(false);
+                    activeEnemyCount--;
                 }
             }
         }
+    }
 
-        spawnTimer += Time.deltaTime;
+    IEnumerator SpawnEnemies()
+    {
+        yield return new WaitForSeconds(initialDelay); // wait for initial delay before starting to spawn enemies
 
-        // If it's time to spawn a new enemy, get one from the pool and activate it
-        if (spawnTimer >= spawnInterval )
+        // Create initial pool
+        for (int i = 0; i < poolSize; i++)
         {
-            spawnTimer -= spawnInterval;
+            GameObject enemy = Instantiate(enemyPrefab, SelectSpawnPoint(), transform.rotation);
+            enemy.SetActive(false);
+            pooledEnemies.Add(enemy);
+        }
 
-            GameObject enemy = GetEnemy();
-            enemy.SetActive(true);
+        while (true)
+        {
+            spawnTimer += Time.deltaTime;
+
+            // If it's time to spawn a new enemy, get one from the pool and activate it
+            if (spawnTimer >= spawnInterval && activeEnemyCount < maxActiveEnemies)
+            {
+                spawnTimer -= spawnInterval;
+
+                GameObject enemy = GetEnemy();
+                enemy.SetActive(true);
+                activeEnemyCount++;
+            }
+
+            yield return null;
         }
     }
 
-    // Select a random spawn point within the minSpawn and maxSpawn boundaries
     public Vector3 SelectSpawnPoint()
     {
         Vector3 spawnPoint = Vector3.zero;
@@ -101,7 +105,7 @@ public class EnemyPooler : MonoBehaviour
         if (spawnVerticalEdge)
         {
             spawnPoint.y = Random.Range(minSpawn.position.y, maxSpawn.position.y);
-
+            
             if (Random.Range(0f, 1f) > .5f)
             {
                 spawnPoint.x = maxSpawn.position.x;
