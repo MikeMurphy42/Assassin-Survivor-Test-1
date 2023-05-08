@@ -10,10 +10,13 @@ public class EnemyPooler : MonoBehaviour
     public Transform minSpawn;
     public Transform maxSpawn;
     public float maxDistanceFromPlayer = 20f;
+    public float maxDistanceCheckInterval = 0.5f;
+    public float initialSpawnDelay = 0f; // new variable for the initial delay
 
     private List<GameObject> pooledEnemies = new List<GameObject>();
     private float spawnTimer = 0.0f;
     private Transform target;
+    private float maxDistanceCheckTimer = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +32,15 @@ public class EnemyPooler : MonoBehaviour
         {
             maxSpawn = transform.Find("MaxSpawn");
         }
+
+        // Wait for the initial spawn delay
+        StartCoroutine(SpawnEnemiesDelayed());
+
+    }
+
+    IEnumerator SpawnEnemiesDelayed()
+    {
+        yield return new WaitForSeconds(initialSpawnDelay);
 
         // Create initial pool
         for (int i = 0; i < poolSize; i++)
@@ -50,19 +62,27 @@ public class EnemyPooler : MonoBehaviour
             transform.position = target.position;
         }
 
-        // Deactivate enemies that are too far from the player
-        foreach (GameObject enemy in pooledEnemies)
+        maxDistanceCheckTimer += Time.deltaTime;
+
+        // Check the distance between enemies and the player a certain number of times per second
+        if (maxDistanceCheckTimer >= maxDistanceCheckInterval)
         {
-            if (enemy.activeSelf && Vector3.Distance(enemy.transform.position, target.position) > maxDistanceFromPlayer)
+            maxDistanceCheckTimer -= maxDistanceCheckInterval;
+
+            // Deactivate enemies that are too far from the player
+            foreach (GameObject enemy in pooledEnemies)
             {
-                enemy.SetActive(false);
+                if (enemy.activeSelf && Vector3.Distance(enemy.transform.position, target.position) > maxDistanceFromPlayer)
+                {
+                    enemy.SetActive(false);
+                }
             }
         }
 
         spawnTimer += Time.deltaTime;
 
         // If it's time to spawn a new enemy, get one from the pool and activate it
-        if (spawnTimer >= spawnInterval)
+        if (spawnTimer >= spawnInterval )
         {
             spawnTimer -= spawnInterval;
 
@@ -126,5 +146,5 @@ public class EnemyPooler : MonoBehaviour
         pooledEnemies.Add(newEnemy);
         return newEnemy;
     }
-}
 
+}
