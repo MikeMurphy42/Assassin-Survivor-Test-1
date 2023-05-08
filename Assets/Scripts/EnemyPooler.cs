@@ -18,7 +18,7 @@ public class EnemyPooler : MonoBehaviour
     private float spawnTimer = 0.0f;
     private Transform target;
     private float maxDistanceCheckTimer = 0f;
-    private int activeEnemyCount = 0;
+    public int activeEnemyCount = 0;
 
     void Start()
     {

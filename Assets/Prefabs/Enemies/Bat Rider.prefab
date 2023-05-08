@@ -9,14 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4194378678882660272}
-  - component: {fileID: 4194378678882660273}
   - component: {fileID: 4194378678882660274}
   - component: {fileID: 4194378678882660275}
   - component: {fileID: 4194378678882660239}
   - component: {fileID: 4194378678882660238}
   m_Layer: 0
   m_Name: Bat Rider
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -37,27 +36,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4194378678882660273
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4194378678882660276}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9fc63ab9fb09a404d8510b1a1314affe, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!58 &4194378678882660274
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -111,6 +89,8 @@ MonoBehaviour:
   moveSpeed: 1
   damage: 5
   hitWaitTime: 1
+  health: 5
+  enemyPrefab: {fileID: 4194378678882660276}
 --- !u!114 &4194378678882660238
 MonoBehaviour:
   m_ObjectHideFlags: 0

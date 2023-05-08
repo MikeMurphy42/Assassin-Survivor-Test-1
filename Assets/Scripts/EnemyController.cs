@@ -13,7 +13,12 @@ public class EnemyController : MonoBehaviour
 
     public float hitWaitTime = 1f;
     private float hitCounter;
+
+    public float health = 5f;
     
+    
+    public GameObject enemyPrefab;
+    public int activeEnemyCount = 0;
     
     // Start is called before the first frame update
     void Start()
@@ -30,6 +35,7 @@ public class EnemyController : MonoBehaviour
         if (hitCounter > 0f)
         {
             hitCounter -= Time.deltaTime;
+            activeEnemyCount--;
         }
     }
 
@@ -40,6 +46,17 @@ public class EnemyController : MonoBehaviour
             PlayerHealthController.instance.TakeDamage(damage);
 
             hitCounter = hitWaitTime;
+        }
+    }
+
+    public void TakeDamage(float damageToTake)
+    {
+        health -= damageToTake;
+
+        if (health <= 0)
+        {
+            enemyPrefab.SetActive(false);
+            activeEnemyCount--;
         }
     }
 }
