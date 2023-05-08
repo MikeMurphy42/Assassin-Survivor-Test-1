@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 0;
     public Animator anim;
     
-    public Transform childTransform;
+    public Transform[] children;
 
     
     // Start is called before the first frame update
@@ -44,27 +44,25 @@ public class PlayerController : MonoBehaviour
         {
             transform.localScale = new Vector3(1, 1, 1); // flip right
             
-            // For Child
-            Vector3 childScale = childTransform.localScale;
-            childScale.x = Mathf.Abs(childScale.x);
-            childTransform.localScale = childScale;
+            // For Children
+            foreach (Transform childTransform in children)
+            {
+                Vector3 childScale = childTransform.localScale;
+                childScale.x = Mathf.Abs(childScale.x);
+                childTransform.localScale = childScale;
+            }
         }
         else if (moveInput.x < 0)
         {
             transform.localScale = new Vector3(-1, 1, 1); // flip left
             
-            // For Child
-            Vector3 childScale = childTransform.localScale;
-            childScale.x = -Mathf.Abs(childScale.x);
-            childTransform.localScale = childScale;
+            // For Children
+            foreach (Transform childTransform in children)
+            {
+                Vector3 childScale = childTransform.localScale;
+                childScale.x = -Mathf.Abs(childScale.x);
+                childTransform.localScale = childScale;
+            }
         }
-        
-        
-        
-        
-        
     }
 }
-
-
-
