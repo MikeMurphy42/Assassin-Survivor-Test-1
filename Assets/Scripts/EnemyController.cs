@@ -14,28 +14,42 @@ public class EnemyController : MonoBehaviour
     private float hitCounter;
 
     public float health = 5f;
+
+    public float knockBackTime = .5f;
+    private float knockBackCounter;
     
-    //public EnemyPooler enemyPooler; // Reference to EnemyPooler script
-    public GameObject enemyPrefab;
-    //public int activeEnemyCount = 0;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        //enemyPooler = FindObjectOfType<EnemyPooler>(); // Find and store reference to EnemyPooler script
-        //target = FindObjectOfType<PlayerController>().transform;
         target = PlayerHealthController.instance.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        if (knockBackCounter > 0)
+        {
+            knockBackCounter -= Time.deltaTime;
+            if (moveSpeed > 0)
+            {
+                moveSpeed = -moveSpeed * 2f;
+
+            }
+
+            if (knockBackCounter <= 0) // Mathf.Abs makes it a Positvie Number beinhg multiplied
+            {
+                moveSpeed = Mathf.Abs(moveSpeed * .5f);
+            }
+        }
+
         theRB.velocity = (target.position -transform.position).normalized * moveSpeed;
 
         if (hitCounter > 0f)
         {
             hitCounter -= Time.deltaTime;
-            //activeEnemyCount--;
+            
         }
     }
 
@@ -55,23 +69,27 @@ public class EnemyController : MonoBehaviour
 
         if (health <= 0)
         {
-            //public void Disable()
-            //{
-                gameObject.SetActive(false);
+            gameObject.SetActive(false);
                 EnemyPooler enemyPooler = FindObjectOfType<EnemyPooler>();
                 if (enemyPooler != null)
                 {
                     enemyPooler.DisableEnemy();
+                    
                 }
-            //}
-            //if (gameObject.CompareTag("Enemy"))
-            //{
-            //gameObject.SetActive(false);
-            //}
-            // Deactivate an enemy and decrease activeEnemyCount
             
-            enemyPrefab.SetActive(false);
-            //activeEnemyCount--;
+            
+            
         }
     }
+
+    public void TakeDamage(float damageToTake, bool shouldKnockback)
+    {
+        TakeDamage(damageToTake);
+
+        if (shouldKnockback == true)
+        {
+            knockBackCounter = knockBackTime;
+        }
+    }
+
 }

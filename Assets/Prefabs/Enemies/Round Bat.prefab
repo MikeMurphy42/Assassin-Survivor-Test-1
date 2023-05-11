@@ -89,7 +89,7 @@ MonoBehaviour:
   moveSpeed: 1
   damage: 5
   hitWaitTime: 1
-  health: 5
+  health: 15
   enemyPrefab: {fileID: 4556928670175262751}
 --- !u!114 &4556928670175262757
 MonoBehaviour:
