@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class EnemyPooler : MonoBehaviour
 {
     public GameObject enemyPrefab;
@@ -150,5 +151,11 @@ public class EnemyPooler : MonoBehaviour
         pooledEnemies.Add(newEnemy);
         return newEnemy;
     }
+    public void DisableEnemy()
+    {
+        activeEnemyCount--;
+    }
+   
+
 
 }

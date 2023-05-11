@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,13 +15,14 @@ public class EnemyController : MonoBehaviour
 
     public float health = 5f;
     
-    
+    //public EnemyPooler enemyPooler; // Reference to EnemyPooler script
     public GameObject enemyPrefab;
-    public int activeEnemyCount = 0;
+    //public int activeEnemyCount = 0;
     
     // Start is called before the first frame update
     void Start()
     {
+        //enemyPooler = FindObjectOfType<EnemyPooler>(); // Find and store reference to EnemyPooler script
         //target = FindObjectOfType<PlayerController>().transform;
         target = PlayerHealthController.instance.transform;
     }
@@ -35,7 +35,7 @@ public class EnemyController : MonoBehaviour
         if (hitCounter > 0f)
         {
             hitCounter -= Time.deltaTime;
-            activeEnemyCount--;
+            //activeEnemyCount--;
         }
     }
 
@@ -55,8 +55,23 @@ public class EnemyController : MonoBehaviour
 
         if (health <= 0)
         {
+            //public void Disable()
+            //{
+                gameObject.SetActive(false);
+                EnemyPooler enemyPooler = FindObjectOfType<EnemyPooler>();
+                if (enemyPooler != null)
+                {
+                    enemyPooler.DisableEnemy();
+                }
+            //}
+            //if (gameObject.CompareTag("Enemy"))
+            //{
+            //gameObject.SetActive(false);
+            //}
+            // Deactivate an enemy and decrease activeEnemyCount
+            
             enemyPrefab.SetActive(false);
-            activeEnemyCount--;
+            //activeEnemyCount--;
         }
     }
 }
