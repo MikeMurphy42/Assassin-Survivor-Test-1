@@ -40,6 +40,8 @@ public class DamageNumberController : MonoBehaviour
         
         newDamage.Setup(rounded);
         newDamage.gameObject.SetActive(true);
+
+        newDamage.transform.position = location;
     }
 
     public DamageNumber GetFromPool()
@@ -50,8 +52,20 @@ public class DamageNumberController : MonoBehaviour
         {
             numberToOutput = Instantiate(numberToSpawn, numberCanvas);
         }
+        else
+        {
+            numberToOutput = numberPool[0];
+            numberPool.RemoveAt(0);
+        }
         
         return numberToOutput;
+    }
+
+    public void PlaceToPool(DamageNumber numberToPlace)
+    {
+        numberToPlace.gameObject.SetActive(false);
+        
+        numberPool.Add(numberToPlace);
     }
     
 }
