@@ -76,10 +76,10 @@ public class EnemyController : MonoBehaviour
                     enemyPooler.DisableEnemy();
                     
                 }
-            
-            
-            
         }
+        
+        DamageNumberController.instance.SpawnDamage(damageToTake, transform.position);
+        
     }
 
     public void TakeDamage(float damageToTake, bool shouldKnockback)
