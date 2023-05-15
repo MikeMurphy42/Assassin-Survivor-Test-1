@@ -2,24 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class EnemyPooler : MonoBehaviour
+[System.Serializable]
+public class EnemyOptions
 {
     public GameObject enemyPrefab;
     public int poolSize = 10;
     public float spawnInterval = 1.0f;
-    public float initialDelay = 5.0f; // new variable to set initial delay
-    public Transform minSpawn;
-    public Transform maxSpawn;
+    public float initialDelay = 5.0f;
     public float maxDistanceFromPlayer = 20f;
     public float maxDistanceCheckInterval = 0.5f;
     public int maxActiveEnemies = 5;
 
-    private List<GameObject> pooledEnemies = new List<GameObject>();
-    private float spawnTimer = 0.0f;
-    private Transform target;
-    private float maxDistanceCheckTimer = 0f;
+    [HideInInspector]
+    public List<GameObject> pooledEnemies = new List<GameObject>();
+    [HideInInspector]
     public int activeEnemyCount = 0;
+    [HideInInspector]
+    public float spawnTimer = 0.0f;
+    [HideInInspector]
+    public float maxDistanceCheckTimer = 0f;
+}
+
+public class EnemyPooler : MonoBehaviour
+{
+    public Transform minSpawn;
+    public Transform maxSpawn;
+    public List<EnemyOptions> enemyOptionsList;
+
+    private Transform target;
 
     void Start()
     {
@@ -35,7 +45,12 @@ public class EnemyPooler : MonoBehaviour
             maxSpawn = transform.Find("MaxSpawn");
         }
 
-        StartCoroutine(SpawnEnemies()); // start the coroutine to spawn enemies
+        foreach (var enemyOption in enemyOptionsList)
+        {
+            StartCoroutine(SpawnEnemies(enemyOption)); // start the coroutine to spawn enemies for this type
+        }
+
+        StartCoroutine(CheckEnemiesDistance());
     }
 
     void Update()
@@ -47,50 +62,35 @@ public class EnemyPooler : MonoBehaviour
             maxSpawn.position = target.position + new Vector3(11f, 7f, 0f);
             transform.position = target.position;
         }
-
-        maxDistanceCheckTimer += Time.deltaTime;
-
-        // Check the distance between enemies and the player a certain number of times per second
-        if (maxDistanceCheckTimer >= maxDistanceCheckInterval)
-        {
-            maxDistanceCheckTimer -= maxDistanceCheckInterval;
-
-            // Deactivate enemies that are too far from the player
-            foreach (GameObject enemy in pooledEnemies)
-            {
-                if (enemy.activeSelf && Vector3.Distance(enemy.transform.position, target.position) > maxDistanceFromPlayer)
-                {
-                    enemy.SetActive(false);
-                    activeEnemyCount--;
-                }
-            }
-        }
     }
 
-    IEnumerator SpawnEnemies()
+    IEnumerator SpawnEnemies(EnemyOptions enemyOptions)
     {
-        yield return new WaitForSeconds(initialDelay); // wait for initial delay before starting to spawn enemies
+        yield return new WaitForSeconds(enemyOptions.initialDelay); // wait for initial delay before starting to spawn enemies
 
         // Create initial pool
-        for (int i = 0; i < poolSize; i++)
+        for (int i = 0; i < enemyOptions.poolSize; i++)
         {
-            GameObject enemy = Instantiate(enemyPrefab, SelectSpawnPoint(), transform.rotation);
+            GameObject enemy = Instantiate(enemyOptions.enemyPrefab, SelectSpawnPoint(), Quaternion.identity);
             enemy.SetActive(false);
-            pooledEnemies.Add(enemy);
+            enemyOptions.pooledEnemies.Add(enemy);
         }
 
         while (true)
         {
-            spawnTimer += Time.deltaTime;
+            enemyOptions.spawnTimer += Time.deltaTime;
 
             // If it's time to spawn a new enemy, get one from the pool and activate it
-            if (spawnTimer >= spawnInterval && activeEnemyCount < maxActiveEnemies)
+            if (enemyOptions.spawnTimer >= enemyOptions.spawnInterval && enemyOptions.activeEnemyCount < enemyOptions.maxActiveEnemies)
             {
-                spawnTimer -= spawnInterval;
+                enemyOptions.spawnTimer -= enemyOptions.spawnInterval;
 
-                GameObject enemy = GetEnemy();
-                enemy.SetActive(true);
-                activeEnemyCount++;
+                GameObject enemy = GetEnemy(enemyOptions);
+                if (enemy != null)
+                {
+                    enemy.SetActive(true);
+                    enemyOptions.activeEnemyCount++;
+                }
             }
 
             yield return null;
@@ -106,7 +106,7 @@ public class EnemyPooler : MonoBehaviour
         if (spawnVerticalEdge)
         {
             spawnPoint.y = Random.Range(minSpawn.position.y, maxSpawn.position.y);
-            
+
             if (Random.Range(0f, 1f) > .5f)
             {
                 spawnPoint.x = maxSpawn.position.x;
@@ -120,7 +120,7 @@ public class EnemyPooler : MonoBehaviour
         {
             spawnPoint.x = Random.Range(minSpawn.position.x, maxSpawn.position.x);
 
-            if (Random.Range(0f, 1f) > .5f)
+            if (Random.Range(0f,            1f) > .5f)
             {
                 spawnPoint.y = maxSpawn.position.y;
             }
@@ -133,29 +133,56 @@ public class EnemyPooler : MonoBehaviour
         return spawnPoint;
     }
 
-    // Get an enemy from the pool
-    public GameObject GetEnemy()
+    public GameObject GetEnemy(EnemyOptions enemyOptions)
     {
-        foreach (GameObject enemy in pooledEnemies)
+        foreach (var enemy in enemyOptions.pooledEnemies)
         {
-            if (!enemy.activeSelf)
+            if (!enemy.activeInHierarchy)
             {
                 enemy.transform.position = SelectSpawnPoint();
-                enemy.SetActive(true);
                 return enemy;
             }
         }
-
-        // If all enemies are active, create a new one
-        GameObject newEnemy = Instantiate(enemyPrefab, SelectSpawnPoint(), transform.rotation);
-        pooledEnemies.Add(newEnemy);
-        return newEnemy;
+        
+        return null;
     }
-    public void DisableEnemy()
+
+   //public void DisableEnemy(EnemyOptions enemyOptions)
+   // {
+   //     enemyOptions.activeEnemyCount--;
+    //}
+
+    public void DisableEnemy(EnemyOptions enemyOptions, GameObject enemy)
     {
-        activeEnemyCount--;
+        enemy.SetActive(false);
+        enemyOptions.activeEnemyCount--;
     }
-   
 
+    IEnumerator CheckEnemiesDistance()
+    {
+        while(true)
+        {
+            foreach (var enemyOption in enemyOptionsList)
+            {
+                enemyOption.maxDistanceCheckTimer += Time.deltaTime;
 
+                if (enemyOption.maxDistanceCheckTimer >= enemyOption.maxDistanceCheckInterval)
+                {
+                    enemyOption.maxDistanceCheckTimer -= enemyOption.maxDistanceCheckInterval;
+
+                    foreach (var enemy in enemyOption.pooledEnemies)
+                    {
+                        if (enemy.activeInHierarchy && Vector3.Distance(target.position, enemy.transform.position) > enemyOption.maxDistanceFromPlayer)
+                        {
+                            enemy.SetActive(false);
+                            enemyOption.activeEnemyCount--;
+                        }
+                    }
+                }
+            }
+
+            yield return null;
+        }
+    }
 }
+

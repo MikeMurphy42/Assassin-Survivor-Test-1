@@ -69,18 +69,24 @@ public class EnemyController : MonoBehaviour
 
         if (health <= 0)
         {
-            gameObject.SetActive(false);
-                EnemyPooler enemyPooler = FindObjectOfType<EnemyPooler>();
-                if (enemyPooler != null)
+            EnemyPooler enemyPooler = FindObjectOfType<EnemyPooler>();
+            if (enemyPooler != null)
+            {
+                foreach (var enemyOption in enemyPooler.enemyOptionsList)
                 {
-                    enemyPooler.DisableEnemy();
-                    
+                    if (enemyOption.pooledEnemies.Contains(gameObject))
+                    {
+                        enemyPooler.DisableEnemy(enemyOption, gameObject);
+                        break;
+                    }
                 }
+            }
         }
-        
+
         DamageNumberController.instance.SpawnDamage(damageToTake, transform.position);
-        
     }
+
+
 
     public void TakeDamage(float damageToTake, bool shouldKnockback)
     {
