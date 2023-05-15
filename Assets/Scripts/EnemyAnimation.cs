@@ -8,6 +8,10 @@ public class EnemyAnimation : MonoBehaviour
     public Transform sprite;
 
     public float speed;
+    
+    // These variables will be editable in the inspector
+    public float minSpeedFactor = .75f;
+    public float maxSpeedFactor = 1.25f;
 
     public float minSize, maxSize;
 
@@ -18,7 +22,7 @@ public class EnemyAnimation : MonoBehaviour
     {
         activeSize = maxSize;
 
-        speed = speed * Random.Range(.75f, 1.25f);
+        speed = speed * Random.Range(minSpeedFactor, maxSpeedFactor);
     }
 
     // Update is called once per frame
