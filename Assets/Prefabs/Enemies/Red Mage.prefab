@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3903171524316933701}
   - component: {fileID: 7408126065157250430}
   - component: {fileID: 7408126065157250370}
-  - component: {fileID: 7408126065157250371}
+  - component: {fileID: 6723401349625377324}
   m_Layer: 0
   m_Name: Red Mage
   m_TagString: Enemy
@@ -91,7 +91,8 @@ MonoBehaviour:
   hitWaitTime: 1
   health: 5
   knockBackTime: 0.5
---- !u!114 &7408126065157250371
+  attackDistance: 1
+--- !u!114 &6723401349625377324
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -100,15 +101,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 7408126065157250425}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dee6814e5c68cc46b9483123d8b3c14, type: 3}
+  m_Script: {fileID: 11500000, guid: 321dd8bfee6649e419858de2321ccd96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 2522033294463507761}
   sprite: {fileID: 4098613149606155085}
-  speed: 0.2
-  minSpeedFactor: 0.7
-  maxSpeedFactor: 1.5
-  minSize: 0.1
-  maxSize: 0.15
+  speed: 0
+  minSpeedFactor: 0.75
+  maxSpeedFactor: 1.25
+  minSize: 0.5
+  maxSize: 1.5
+  deathEffectPrefab: {fileID: 1037542503268038, guid: f35c52aa1abeb6b4b86e682039141b66, type: 3}
+  useDeathAnimation: 0
+  useIdleAnimation: 1
+  useRunAnimation: 1
+  useAttackAnimation: 1
 --- !u!1001 &2386738252651480689
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -118,7 +125,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 152957601734482752, guid: 332b21a684312b34798ace98affe4eed, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1873030402443433276, guid: 332b21a684312b34798ace98affe4eed, type: 3}
       propertyPath: m_RootOrder
@@ -202,8 +209,34 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 332b21a684312b34798ace98affe4eed, type: 3}
+--- !u!95 &2522033294463507761 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 152957601734482752, guid: 332b21a684312b34798ace98affe4eed, type: 3}
+  m_PrefabInstance: {fileID: 2386738252651480689}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4098613149606155085 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1873030402443433276, guid: 332b21a684312b34798ace98affe4eed, type: 3}
   m_PrefabInstance: {fileID: 2386738252651480689}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4658657284826465063 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7041806645088666966, guid: 332b21a684312b34798ace98affe4eed, type: 3}
+  m_PrefabInstance: {fileID: 2386738252651480689}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &6880233964440629118
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4658657284826465063}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.08, y: 4.25}
+  m_Size: {x: 2.25, y: 4.75}
+  m_Direction: 0

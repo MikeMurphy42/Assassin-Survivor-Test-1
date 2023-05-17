@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,7 +6,7 @@ public class EnemyController : MonoBehaviour
     public Rigidbody2D theRB;
     public float moveSpeed;
     private Transform target;
-    
+
     public float damage;
 
     public float hitWaitTime = 1f;
@@ -17,45 +16,55 @@ public class EnemyController : MonoBehaviour
 
     public float knockBackTime = .5f;
     private float knockBackCounter;
-    
 
-    // Start is called before the first frame update
-    void Start()
+    public float attackDistance = 1f;
+
+    private EnemyAnimator enemyAnimator;
+
+    public static EnemyController instance;
+
+    private void Awake()
+    {
+        instance = this;
+        enemyAnimator = GetComponent<EnemyAnimator>();
+    }
+
+    private void Start()
     {
         target = PlayerHealthController.instance.transform;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-
         if (knockBackCounter > 0)
         {
             knockBackCounter -= Time.deltaTime;
             if (moveSpeed > 0)
             {
                 moveSpeed = -moveSpeed * 2f;
-
             }
 
-            if (knockBackCounter <= 0) // Mathf.Abs makes it a Positvie Number beinhg multiplied
+            if (knockBackCounter <= 0)
             {
                 moveSpeed = Mathf.Abs(moveSpeed * .5f);
             }
         }
 
-        theRB.velocity = (target.position -transform.position).normalized * moveSpeed;
+        theRB.velocity = (target.position - transform.position).normalized * moveSpeed;
 
         if (hitCounter > 0f)
         {
             hitCounter -= Time.deltaTime;
-            
         }
+
+        float distanceToTarget = Vector2.Distance(transform.position, target.position);
+        enemyAnimator.SetAttackDistance(distanceToTarget <= attackDistance);
+        enemyAnimator.SetMoveSpeed(moveSpeed);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Player" && hitCounter <= 0f)
+        if (collision.gameObject.CompareTag("Player") && hitCounter <= 0f)
         {
             PlayerHealthController.instance.TakeDamage(damage);
 
@@ -69,33 +78,27 @@ public class EnemyController : MonoBehaviour
 
         if (health <= 0)
         {
-            EnemyPooler enemyPooler = FindObjectOfType<EnemyPooler>();
-            if (enemyPooler != null)
-            {
-                foreach (var enemyOption in enemyPooler.enemyOptionsList)
-                {
-                    if (enemyOption.pooledEnemies.Contains(gameObject))
-                    {
-                        enemyPooler.DisableEnemy(enemyOption, gameObject);
-                        break;
-                    }
-                }
-            }
+            Die();
         }
 
         DamageNumberController.instance.SpawnDamage(damageToTake, transform.position);
     }
 
-
-
     public void TakeDamage(float damageToTake, bool shouldKnockback)
     {
         TakeDamage(damageToTake);
 
-        if (shouldKnockback == true)
+        if (shouldKnockback)
         {
             knockBackCounter = knockBackTime;
         }
     }
 
+    private void Die()
+    {
+        enemyAnimator.PlayDeathAnimation();
+        enemyAnimator.SpawnDeathEffect(transform.position);
+
+        // Handle enemy death
+    }
 }

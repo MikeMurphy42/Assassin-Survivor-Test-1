@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 2188103764316908939}
   - component: {fileID: 2188103764316908936}
   - component: {fileID: 2188103764316908980}
-  - component: {fileID: 2188103764316908981}
   - component: {fileID: 2188103764316908987}
+  - component: {fileID: 3502999159217656656}
   m_Layer: 0
   m_Name: Reaper-Black
   m_TagString: Enemy
@@ -76,24 +76,7 @@ MonoBehaviour:
   hitWaitTime: 1
   health: 5
   knockBackTime: 0.5
---- !u!114 &2188103764316908981
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2188103764316908943}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dee6814e5c68cc46b9483123d8b3c14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sprite: {fileID: 1678051226729983295}
-  speed: 0.15
-  minSpeedFactor: 0.75
-  maxSpeedFactor: 1.25
-  minSize: 0.15
-  maxSize: 0.2
+  attackDistance: 0.5
 --- !u!70 &2188103764316908987
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -107,9 +90,33 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.15, y: 0}
-  m_Size: {x: 0.15, y: 0.75}
+  m_Offset: {x: -0.15, y: 0.14}
+  m_Size: {x: 0.15, y: 0.6}
   m_Direction: 0
+--- !u!114 &3502999159217656656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2188103764316908943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 321dd8bfee6649e419858de2321ccd96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1678051226729983681}
+  sprite: {fileID: 1678051226729983295}
+  speed: 0.5
+  minSpeedFactor: 0.3
+  maxSpeedFactor: 1.25
+  minSize: 0.05
+  maxSize: 0.25
+  deathEffectPrefab: {fileID: 1037542503268038, guid: f35c52aa1abeb6b4b86e682039141b66, type: 3}
+  useDeathAnimation: 0
+  useIdleAnimation: 1
+  useRunAnimation: 1
+  useAttackAnimation: 1
 --- !u!1 &4677296407849205906
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,6 +222,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6162610656125631959, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162610656125632040, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6162610656125632041, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
@@ -269,10 +280,37 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6162610656125632040, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
 --- !u!4 &1678051226729983295 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6162610656125632041, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
   m_PrefabInstance: {fileID: 4813326617956946710}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1678051226729983681 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 6162610656125631959, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
+  m_PrefabInstance: {fileID: 4813326617956946710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1678051226729983682 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6162610656125631956, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
+  m_PrefabInstance: {fileID: 4813326617956946710}
+  m_PrefabAsset: {fileID: 0}
+--- !u!70 &2453279455017201382
+CapsuleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1678051226729983682}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.75, y: 0.71}
+  m_Size: {x: 1.08, y: 4.5}
+  m_Direction: 0

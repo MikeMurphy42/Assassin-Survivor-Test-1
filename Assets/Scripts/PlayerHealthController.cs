@@ -14,18 +14,17 @@ public class PlayerHealthController : MonoBehaviour
         instance = this;
     }
 
-
     public float currentHealth, maxHealth;
-
     public Slider healthSlider;
+    private PlayerController playerController;
     
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
-        
         healthSlider.maxValue = maxHealth;
         healthSlider.value = currentHealth;
+        playerController = GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
@@ -39,14 +38,18 @@ public class PlayerHealthController : MonoBehaviour
 
     public void TakeDamage(float damageToTake)
     {
-        currentHealth -= damageToTake;
-
-        if (currentHealth <= 0)
+        // Check if the player is invincible before taking damage
+        if (!playerController.isInvincible)
         {
-            gameObject.SetActive(false);
-        }
+            currentHealth -= damageToTake;
 
-        healthSlider.value = currentHealth;
+            if (currentHealth <= 0)
+            {
+                gameObject.SetActive(false);
+            }
+
+            healthSlider.value = currentHealth;
+        }
     }
     
 }
