@@ -93,6 +93,7 @@ MonoBehaviour:
   health: 5
   knockBackTime: 0.5
   attackDistance: 1
+  attackCooldown: 2
 --- !u!114 &8684658976000214835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,7 +143,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574612902224445715}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.7, y: 0.7, z: 1}
   m_ConstrainProportionsScale: 0
@@ -150,7 +151,7 @@ Transform:
   - {fileID: 5574612903683232485}
   m_Father: {fileID: 4556928670175262747}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!95 &6793309320561187446
 Animator:
   serializedVersion: 5
@@ -212,7 +213,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574612903683232490}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.01999998, y: -0.18519974, z: -0.11244741}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

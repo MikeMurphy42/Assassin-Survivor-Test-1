@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,8 +19,15 @@ public class EnemyController : MonoBehaviour
     private float knockBackCounter;
 
     public float attackDistance = 1f;
+    public float attackCooldown = 2f;
+
+    private bool isAttacking;
+    private float attackTimer;
 
     private EnemyAnimator enemyAnimator;
+    private SpriteRenderer spriteRenderer;
+
+    private EnemyPooler enemyPooler; // Reference to the EnemyPooler script
 
     public static EnemyController instance;
 
@@ -27,6 +35,9 @@ public class EnemyController : MonoBehaviour
     {
         instance = this;
         enemyAnimator = GetComponent<EnemyAnimator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+
+        enemyPooler = FindObjectOfType<EnemyPooler>(); // Find and reference the EnemyPooler script
     }
 
     private void Start()
@@ -60,6 +71,36 @@ public class EnemyController : MonoBehaviour
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
         enemyAnimator.SetAttackDistance(distanceToTarget <= attackDistance);
         enemyAnimator.SetMoveSpeed(moveSpeed);
+
+        // Check if within attack distance and not currently attacking
+        if (distanceToTarget <= attackDistance && !isAttacking)
+        {
+            // Start attack
+            isAttacking = true;
+            attackTimer = attackCooldown;
+            Attack();
+        }
+
+        // Check attack cooldown timer
+        if (isAttacking)
+        {
+            attackTimer -= Time.deltaTime;
+            if (attackTimer <= 0f)
+            {
+                // Reset attack state
+                isAttacking = false;
+            }
+        }
+
+        // Flip sprite based on movement direction
+        if (theRB.velocity.x > 0)
+        {
+            spriteRenderer.flipX = false;
+        }
+        else if (theRB.velocity.x < 0)
+        {
+            spriteRenderer.flipX = true;
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -67,7 +108,6 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.CompareTag("Player") && hitCounter <= 0f)
         {
             PlayerHealthController.instance.TakeDamage(damage);
-
             hitCounter = hitWaitTime;
         }
     }
@@ -99,6 +139,14 @@ public class EnemyController : MonoBehaviour
         enemyAnimator.PlayDeathAnimation();
         enemyAnimator.SpawnDeathEffect(transform.position);
 
-        // Handle enemy death
+        // Disable the enemy using the EnemyPooler script
+        enemyPooler.DisableEnemy(gameObject);
+    }
+
+    private void Attack()
+    {
+        // Perform attack logic here
+        // For example, deal damage to the player or trigger an attack animation
+        PlayerHealthController.instance.TakeDamage(damage);
     }
 }

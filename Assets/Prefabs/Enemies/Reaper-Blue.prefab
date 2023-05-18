@@ -71,12 +71,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   theRB: {fileID: 3009761935043594891}
-  moveSpeed: 1
-  damage: 5
+  moveSpeed: 0.8
+  damage: 2
   hitWaitTime: 1
   health: 5
-  knockBackTime: 0.5
-  attackDistance: 1
+  knockBackTime: 0.7
+  attackDistance: 0.75
+  attackCooldown: 2
 --- !u!70 &3009761935043594936
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -91,7 +92,7 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: -0.08, y: 0}
-  m_Size: {x: 0.1, y: 0.75}
+  m_Size: {x: 0.4, y: 0.6}
   m_Direction: 0
 --- !u!114 &1745376482082553173
 MonoBehaviour:
@@ -107,13 +108,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 5054325803733026950}
   sprite: {fileID: 5054325803733026948}
-  speed: 0
-  minSpeedFactor: 0.75
-  maxSpeedFactor: 1.25
-  minSize: 0.5
-  maxSize: 1.5
+  speed: 0.1
+  minSpeedFactor: 0.5
+  maxSpeedFactor: 0.75
+  minSize: 0.1
+  maxSize: 0.15
   deathEffectPrefab: {fileID: 1037542503268038, guid: f35c52aa1abeb6b4b86e682039141b66, type: 3}
-  useDeathAnimation: 1
+  useDeathAnimation: 0
+  useIdleAnimation: 1
+  useRunAnimation: 1
+  useAttackAnimation: 1
 --- !u!1 &8606517436907906961
 GameObject:
   m_ObjectHideFlags: 0
@@ -130,7 +134,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2883534536973722917
 Transform:
   m_ObjectHideFlags: 0
@@ -290,8 +294,8 @@ CapsuleCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.81, y: 0.36}
-  m_Size: {x: 0.52, y: 5}
+  m_Offset: {x: -0.8, y: 0}
+  m_Size: {x: 4.05, y: 6.05}
   m_Direction: 0
 --- !u!4 &5054325803733026948 stripped
 Transform:

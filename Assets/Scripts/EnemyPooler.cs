@@ -120,7 +120,7 @@ public class EnemyPooler : MonoBehaviour
         {
             spawnPoint.x = Random.Range(minSpawn.position.x, maxSpawn.position.x);
 
-            if (Random.Range(0f,            1f) > .5f)
+            if (Random.Range(0f, 1f) > .5f)
             {
                 spawnPoint.y = maxSpawn.position.y;
             }
@@ -132,7 +132,6 @@ public class EnemyPooler : MonoBehaviour
 
         return spawnPoint;
     }
-
     public GameObject GetEnemy(EnemyOptions enemyOptions)
     {
         foreach (var enemy in enemyOptions.pooledEnemies)
@@ -143,24 +142,26 @@ public class EnemyPooler : MonoBehaviour
                 return enemy;
             }
         }
-        
+
         return null;
     }
 
-   //public void DisableEnemy(EnemyOptions enemyOptions)
-   // {
-   //     enemyOptions.activeEnemyCount--;
-    //}
-
-    public void DisableEnemy(EnemyOptions enemyOptions, GameObject enemy)
+    public void DisableEnemy(GameObject enemy)
     {
-        enemy.SetActive(false);
-        enemyOptions.activeEnemyCount--;
+        foreach (var enemyOption in enemyOptionsList)
+        {
+            if (enemyOption.pooledEnemies.Contains(enemy))
+            {
+                enemy.SetActive(false);
+                enemyOption.activeEnemyCount--;
+                break;
+            }
+        }
     }
 
     IEnumerator CheckEnemiesDistance()
     {
-        while(true)
+        while (true)
         {
             foreach (var enemyOption in enemyOptionsList)
             {
@@ -174,8 +175,7 @@ public class EnemyPooler : MonoBehaviour
                     {
                         if (enemy.activeInHierarchy && Vector3.Distance(target.position, enemy.transform.position) > enemyOption.maxDistanceFromPlayer)
                         {
-                            enemy.SetActive(false);
-                            enemyOption.activeEnemyCount--;
+                            DisableEnemy(enemy);
                         }
                     }
                 }
@@ -185,4 +185,3 @@ public class EnemyPooler : MonoBehaviour
         }
     }
 }
-
