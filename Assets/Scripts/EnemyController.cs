@@ -141,6 +141,8 @@ public class EnemyController : MonoBehaviour
 
         // Disable the enemy using the EnemyPooler script
         enemyPooler.DisableEnemy(gameObject);
+        
+        ExperianceLevelController.instance.SpawnExp(transform.position);
     }
 
     private void Attack()
