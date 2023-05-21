@@ -18,6 +18,8 @@ public class EnemyController : MonoBehaviour
     public float knockBackTime = .5f;
     private float knockBackCounter;
 
+    public int expToGive = 1;
+
     public float attackDistance = 1f;
     public float attackCooldown = 2f;
 
@@ -142,7 +144,7 @@ public class EnemyController : MonoBehaviour
         // Disable the enemy using the EnemyPooler script
         enemyPooler.DisableEnemy(gameObject);
         
-        ExperianceLevelController.instance.SpawnExp(transform.position);
+        ExperianceLevelController.instance.SpawnExp(transform.position, expToGive);
     }
 
     private void Attack()
