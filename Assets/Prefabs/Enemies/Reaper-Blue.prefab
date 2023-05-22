@@ -76,7 +76,7 @@ MonoBehaviour:
   hitWaitTime: 1
   health: 5
   knockBackTime: 0.7
-  expToGive: 10
+  expToGive: 3
   attackDistance: 0.75
   attackCooldown: 2
 --- !u!70 &3009761935043594936
