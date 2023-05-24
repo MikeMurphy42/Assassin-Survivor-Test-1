@@ -25,7 +25,8 @@ public class SpinWeapon : Weapon
     // Update is called once per frame
     void Update()
     {
-        holder.rotation = Quaternion.Euler(0f, 0f, holder.rotation.eulerAngles.z + (rotateSpeed * Time.deltaTime));
+        //holder.rotation = Quaternion.Euler(0f, 0f, holder.rotation.eulerAngles.z + (rotateSpeed * Time.deltaTime));
+        holder.rotation = Quaternion.Euler(0f, 0f, holder.rotation.eulerAngles.z + (rotateSpeed * Time.deltaTime * stats[weaponLvl].speed));
 
         spawnCounter -= Time.deltaTime;
         if (spawnCounter <0)
@@ -44,6 +45,14 @@ public class SpinWeapon : Weapon
             transform.localScale = Vector3.one * scale;
             scaleUpdateCounter = 0.2f;
         }
+
+        if (statsUpdated == true)
+        {
+            statsUpdated = false;
+            
+            SetStats();
+        }
+        
     }
 
     public void SetStats()
