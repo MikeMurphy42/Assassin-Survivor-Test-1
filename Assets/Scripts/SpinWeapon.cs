@@ -20,6 +20,8 @@ public class SpinWeapon : Weapon
     void Start()
     {
         SetStats();
+        
+        //UIController.instance.LevelUpSelectionButtons[0].UpdateButtonDisplay(this);
     }
 
     // Update is called once per frame

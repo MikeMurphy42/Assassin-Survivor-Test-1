@@ -18,6 +18,10 @@ public class UIController : MonoBehaviour
     public Slider expLvlSlider;
     public TMP_Text expLvlText;
 
+    public LevelUpSelectionButton[] LevelUpSelectionButtons;
+
+    public GameObject levelUpPanel;
+
     public int a, b;
 
     // Start is called before the first frame update
@@ -37,6 +41,6 @@ public class UIController : MonoBehaviour
         expLvlSlider.maxValue = levelExp;
         expLvlSlider.value = currentExp;
 
-        expLvlText.text = "Level: " + currentLvl;
+        expLvlText.text = "LVL - " + currentLvl;
     }
 }
