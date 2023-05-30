@@ -75,7 +75,12 @@ public class ExperianceLevelController : MonoBehaviour
 
         Time.timeScale = 0f;
         
-        UIController.instance.LevelUpSelectionButtons[1].UpdateButtonDisplay(PlayerController.instance.activeWeapon);
+        //UIController.instance.LevelUpSelectionButtons[1].UpdateButtonDisplay(PlayerController.instance.activeWeapon);
+        //UIController.instance.LevelUpSelectionButtons[0].UpdateButtonDisplay(PlayerController.instance.assignedWeapons[0]);
+        
+        //UIController.instance.LevelUpSelectionButtons[1].UpdateButtonDisplay(PlayerController.instance.unassignedWeapons[0]);
+        //UIController.instance.LevelUpSelectionButtons[2].UpdateButtonDisplay(PlayerController.instance.unassignedWeapons[1]);
+        
 
     }
     

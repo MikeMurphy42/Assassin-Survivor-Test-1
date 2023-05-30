@@ -1,7 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class PlayerController : MonoBehaviour
 {
@@ -38,11 +41,19 @@ public class PlayerController : MonoBehaviour
 
     public float pickupRange = 1.5f;
 
-    public Weapon activeWeapon;
+    //public Weapon activeWeapon;
+
+    public List<Weapon> unassignedWeapons, assignedWeapons;
+
+    public int maxWeapons = 8;
 
     // Start is called before the first frame update
     void Start()
     {
+
+        AddWeapon(Random.Range(0, unassignedWeapons.Count));
+        
+        
         foreach (Transform child in transform.GetComponentsInChildren<Transform>())
         {
             if (!shaderChangeExcludeList.Contains(child.gameObject) && !materialChangeExcludeList.Contains(child.gameObject))
@@ -141,6 +152,25 @@ public class PlayerController : MonoBehaviour
                 childTransform.localScale = childScale;
             }
         }
+    }
+
+    public void AddWeapon(int weaponNumber)
+    {
+        if (weaponNumber < unassignedWeapons.Count)
+        {
+            assignedWeapons.Add(unassignedWeapons[weaponNumber]);
+            
+            unassignedWeapons[weaponNumber].gameObject.SetActive(true);
+            unassignedWeapons.RemoveAt(weaponNumber);
+        }
+    }
+
+    public void AddWeapon(Weapon weaponToAdd)
+    {
+       weaponToAdd.gameObject.SetActive(true); 
+       
+       assignedWeapons.Add(weaponToAdd);
+       unassignedWeapons.Remove(weaponToAdd);
     }
 }
 
