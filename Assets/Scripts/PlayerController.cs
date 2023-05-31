@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
 
     public List<Weapon> unassignedWeapons, assignedWeapons;
 
-    public int maxWeapons = 8;
+    public int maxWeapons = 3;
 
     // Start is called before the first frame update
     void Start()

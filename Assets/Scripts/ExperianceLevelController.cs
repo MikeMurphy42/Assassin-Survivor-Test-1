@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ExperianceLevelController : MonoBehaviour
 
@@ -17,6 +18,11 @@ public class ExperianceLevelController : MonoBehaviour
     
     public List<int> expLevels;
     public int currentlevel = 1, levelCount = 100;
+
+    public List<Weapon> weaponsToUpgrade;
+
+
+
 
     private void Awake()
     {
@@ -81,7 +87,40 @@ public class ExperianceLevelController : MonoBehaviour
         //UIController.instance.LevelUpSelectionButtons[1].UpdateButtonDisplay(PlayerController.instance.unassignedWeapons[0]);
         //UIController.instance.LevelUpSelectionButtons[2].UpdateButtonDisplay(PlayerController.instance.unassignedWeapons[1]);
         
+        weaponsToUpgrade.Clear();
 
+        List<Weapon> availableWeapons = new List<Weapon>();
+
+        if (PlayerController.instance.assignedWeapons.Count < PlayerController.instance.maxWeapons)
+        {
+            availableWeapons.AddRange(PlayerController.instance.assignedWeapons);
+        }
+        
+        if (availableWeapons.Count > 0)
+        {
+            int selected = Random.Range(0, availableWeapons.Count);
+            weaponsToUpgrade.Add(availableWeapons[selected]);
+            availableWeapons.RemoveAt(selected);
+        }
+
+        availableWeapons.AddRange(PlayerController.instance.unassignedWeapons);
+        
+        for (int i = weaponsToUpgrade.Count; i < 3; i++)
+        {
+            if (availableWeapons.Count > 0)
+            {
+                int selected = Random.Range(0, availableWeapons.Count);
+                weaponsToUpgrade.Add(availableWeapons[selected]);
+                availableWeapons.RemoveAt(selected);
+            }
+        }
+        
+
+        for (int i = 0; i < weaponsToUpgrade.Count; i++)
+        {
+            UIController.instance.LevelUpSelectionButtons[i].UpdateButtonDisplay(weaponsToUpgrade[i]);
+        }
+        
     }
     
 }
