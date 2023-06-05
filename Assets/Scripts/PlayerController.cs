@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 
 public class PlayerController : MonoBehaviour
@@ -46,6 +43,9 @@ public class PlayerController : MonoBehaviour
     public List<Weapon> unassignedWeapons, assignedWeapons;
 
     public int maxWeapons = 3;
+
+    [HideInInspector]
+    public List<Weapon> fullyLevelledWeapons = new List<Weapon>();
 
     // Start is called before the first frame update
     void Start()

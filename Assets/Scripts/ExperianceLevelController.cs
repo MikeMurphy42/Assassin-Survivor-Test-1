@@ -1,12 +1,10 @@
-using System;
+//using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Random = UnityEngine.Random;
+
 
 public class ExperianceLevelController : MonoBehaviour
-
-
 
 {
 
@@ -20,17 +18,10 @@ public class ExperianceLevelController : MonoBehaviour
     public int currentlevel = 1, levelCount = 100;
 
     public List<Weapon> weaponsToUpgrade;
-
-
-
-
     private void Awake()
     {
         instance = this;
     }
-
-   
-
     // Start is called before the first frame update
     void Start()
     {
@@ -39,13 +30,11 @@ public class ExperianceLevelController : MonoBehaviour
             expLevels.Add(Mathf.CeilToInt(expLevels[expLevels.Count - 1] * 1.1f));
         }
     }
-
     // Update is called once per frame
     void Update()
     {
         
     }
-
     public void GetExp(int amountToGet)
     {
         currentExperiance += amountToGet;
@@ -90,8 +79,11 @@ public class ExperianceLevelController : MonoBehaviour
         weaponsToUpgrade.Clear();
 
         List<Weapon> availableWeapons = new List<Weapon>();
+        
+        // Test (succeded)
+        availableWeapons.AddRange(PlayerController.instance.assignedWeapons);
 
-        if (PlayerController.instance.assignedWeapons.Count < PlayerController.instance.maxWeapons)
+        if (PlayerController.instance.assignedWeapons.Count + PlayerController.instance.fullyLevelledWeapons.Count < PlayerController.instance.maxWeapons)// test (succeded)
         {
             availableWeapons.AddRange(PlayerController.instance.assignedWeapons);
         }
@@ -103,8 +95,11 @@ public class ExperianceLevelController : MonoBehaviour
             availableWeapons.RemoveAt(selected);
         }
 
-        availableWeapons.AddRange(PlayerController.instance.unassignedWeapons);
-        
+        if (PlayerController.instance.assignedWeapons.Count + PlayerController.instance.fullyLevelledWeapons.Count < PlayerController.instance.maxWeapons)// test (succeded)
+        {
+            availableWeapons.AddRange(PlayerController.instance.unassignedWeapons);
+        }
+
         for (int i = weaponsToUpgrade.Count; i < 3; i++)
         {
             if (availableWeapons.Count > 0)
@@ -115,12 +110,21 @@ public class ExperianceLevelController : MonoBehaviour
             }
         }
         
-
         for (int i = 0; i < weaponsToUpgrade.Count; i++)
         {
             UIController.instance.LevelUpSelectionButtons[i].UpdateButtonDisplay(weaponsToUpgrade[i]);
         }
         
+        for (int i = 0; i < UIController.instance.LevelUpSelectionButtons.Length; i++)
+        {
+            if (i < weaponsToUpgrade.Count)
+            {
+                UIController.instance.LevelUpSelectionButtons[i].gameObject.SetActive(true);
+            }
+            else
+            {
+                UIController.instance.LevelUpSelectionButtons[i].gameObject.SetActive(false);
+            }
+        }
     }
-    
 }
