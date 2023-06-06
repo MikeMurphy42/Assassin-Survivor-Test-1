@@ -43,4 +43,11 @@ public class UIController : MonoBehaviour
 
         expLvlText.text = "LVL - " + currentLvl;
     }
+
+    public void SkipLVLUp()
+    {
+        levelUpPanel.SetActive(false);
+        Time.timeScale = 1f;
+    }
+    
 }
