@@ -35,8 +35,17 @@ public class SpinWeapon : Weapon
         {
             spawnCounter = timeBetweenSpawn;
 
-            Transform blackHole = Instantiate(blackHoleToSpawn, blackHoleToSpawn.position, blackHoleToSpawn.rotation, holder);
-            blackHole.gameObject.SetActive(true);
+            
+// check this info. not working. past code needs to be fixed cuz 2  options show up when selecting a weapon to lvl up
+            for (int i = 0; i < stats[weaponLvl].amount; i++)
+            {
+                float rot = 360f / stats[weaponLvl].amount * i;
+                
+                Transform blackHole = Instantiate(blackHoleToSpawn, blackHoleToSpawn.position, Quaternion.Euler(0f, 0f, rot), holder);
+                blackHole.gameObject.SetActive(true);
+            }
+            
+            
         }
 
         // Update range every 0.2 seconds
