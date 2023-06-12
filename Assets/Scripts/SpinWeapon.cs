@@ -4,48 +4,41 @@ using UnityEngine;
 
 public class SpinWeapon : Weapon
 {
-
     public float rotateSpeed;
-
     public Transform holder, blackHoleToSpawn;
-
     public float timeBetweenSpawn;
     private float spawnCounter;
-
     public EnemyDamager damager;
-
     private float scaleUpdateCounter = 0.2f; // Counter for scale update
     
     // Start is called before the first frame update
     void Start()
     {
         SetStats();
-        
         //UIController.instance.LevelUpSelectionButtons[0].UpdateButtonDisplay(this);
     }
 
     // Update is called once per frame
     void Update()
     {
-        //holder.rotation = Quaternion.Euler(0f, 0f, holder.rotation.eulerAngles.z + (rotateSpeed * Time.deltaTime));
         holder.rotation = Quaternion.Euler(0f, 0f, holder.rotation.eulerAngles.z + (rotateSpeed * Time.deltaTime * stats[weaponLvl].speed));
 
         spawnCounter -= Time.deltaTime;
-        if (spawnCounter <0)
+        if (spawnCounter < 0)
         {
             spawnCounter = timeBetweenSpawn;
 
-            
-// check this info. not working. past code needs to be fixed cuz 2  options show up when selecting a weapon to lvl up
             for (int i = 0; i < stats[weaponLvl].amount; i++)
             {
-                float rot = 360f / stats[weaponLvl].amount * i;
-                
-                Transform blackHole = Instantiate(blackHoleToSpawn, blackHoleToSpawn.position, Quaternion.Euler(0f, 0f, rot), holder);
-                blackHole.gameObject.SetActive(true);
+                float angle = 360f / stats[weaponLvl].amount * i;
+                float radius = stats[weaponLvl].range;
+                float posX = radius * Mathf.Cos(angle * Mathf.Deg2Rad);
+                float posY = radius * Mathf.Sin(angle * Mathf.Deg2Rad);
+                Vector3 spawnPosition = holder.position + new Vector3(posX, posY, 0f);
+
+                Quaternion spawnRotation = Quaternion.Euler(0f, 0f, angle);
+                Instantiate(blackHoleToSpawn, spawnPosition, spawnRotation, holder).gameObject.SetActive(true);
             }
-            
-            
         }
 
         // Update range every 0.2 seconds
@@ -60,10 +53,8 @@ public class SpinWeapon : Weapon
         if (statsUpdated == true)
         {
             statsUpdated = false;
-            
             SetStats();
         }
-        
     }
 
     public void SetStats()
@@ -97,5 +88,4 @@ public class SpinWeapon : Weapon
 
         blackHole.gameObject.SetActive(false);
     }
-    
 }
