@@ -28,12 +28,15 @@ public class EnemyPooler : MonoBehaviour
     public Transform minSpawn;
     public Transform maxSpawn;
     public List<EnemyOptions> enemyOptionsList;
+    public float playerCheckInterval = 1.0f;
 
     private Transform target;
+    private bool playerIsPresent;
 
     void Start()
     {
         target = PlayerHealthController.instance.transform;
+        playerIsPresent = target.gameObject.activeSelf;
 
         if (minSpawn == null)
         {
@@ -51,12 +54,13 @@ public class EnemyPooler : MonoBehaviour
         }
 
         StartCoroutine(CheckEnemiesDistance());
+        StartCoroutine(CheckPlayerPresence()); // start the coroutine to check for player's presence
     }
 
     void Update()
     {
         // Update the positions of the minSpawn and maxSpawn to follow the player
-        if (target != null)
+        if (target != null && target.gameObject.activeSelf)
         {
             minSpawn.position = target.position + new Vector3(-11f, -7f, 0f);
             maxSpawn.position = target.position + new Vector3(11f, 7f, 0f);
@@ -80,8 +84,8 @@ public class EnemyPooler : MonoBehaviour
         {
             enemyOptions.spawnTimer += Time.deltaTime;
 
-            // If it's time to spawn a new enemy, get one from the pool and activate it
-            if (enemyOptions.spawnTimer >= enemyOptions.spawnInterval && enemyOptions.activeEnemyCount < enemyOptions.maxActiveEnemies)
+            // Only spawn enemies if the player is present in the scene
+            if (playerIsPresent && enemyOptions.spawnTimer >= enemyOptions.spawnInterval && enemyOptions.activeEnemyCount < enemyOptions.maxActiveEnemies)
             {
                 enemyOptions.spawnTimer -= enemyOptions.spawnInterval;
 
@@ -110,8 +114,7 @@ public class EnemyPooler : MonoBehaviour
             if (Random.Range(0f, 1f) > .5f)
             {
                 spawnPoint.x = maxSpawn.position.x;
-            }
-            else
+            }             else
             {
                 spawnPoint.x = minSpawn.position.x;
             }
@@ -132,6 +135,7 @@ public class EnemyPooler : MonoBehaviour
 
         return spawnPoint;
     }
+
     public GameObject GetEnemy(EnemyOptions enemyOptions)
     {
         foreach (var enemy in enemyOptions.pooledEnemies)
@@ -184,4 +188,15 @@ public class EnemyPooler : MonoBehaviour
             yield return null;
         }
     }
+
+    IEnumerator CheckPlayerPresence()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(playerCheckInterval);
+            playerIsPresent = target.gameObject.activeSelf;
+        }
+    }
 }
+
+           
