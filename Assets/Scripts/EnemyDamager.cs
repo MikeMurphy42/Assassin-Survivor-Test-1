@@ -11,8 +11,14 @@ public class EnemyDamager : MonoBehaviour
     private Vector3 targetSize;
     public bool shouldKnockback;
     public bool destroyParent;
-    
-    
+
+    public bool damageOverTime;
+    public float timeBetweenDamage;
+    private float damageCounter;
+
+    private List<EnemyController> enemiesInRange = new List<EnemyController>();
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,9 +52,30 @@ public class EnemyDamager : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.tag =="Enemy")
+        if (damageOverTime == false)
         {
-            collision.GetComponent<EnemyController>().TakeDamage(damageAmount, shouldKnockback);
+            if (collision.tag == "Enemy")
+            {
+                collision.GetComponent<EnemyController>().TakeDamage(damageAmount, shouldKnockback);
+            }
+        }
+        else
+        {
+            if (collision.tag == "Enemy")                //  test  if (collision.CompareTag("Enemy"))   test
+            {
+                enemiesInRange.Add(collision.GetComponent<EnemyController>());
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (damageOverTime == true)
+        {
+            if (collision.tag == "Enemy")
+            {
+                enemiesInRange.Remove(collision.GetComponent<EnemyController>());
+            }
         }
     }
 }
