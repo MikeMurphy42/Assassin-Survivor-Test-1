@@ -48,6 +48,30 @@ public class EnemyDamager : MonoBehaviour
                 }
             }
         }
+
+        if (damageOverTime == true)
+        {
+            damageCounter -= Time.deltaTime;
+
+            if (damageCounter <= 0)
+            {
+                damageCounter = timeBetweenDamage;
+
+                for (int i = 0; i < enemiesInRange.Count; i++)
+                {
+                    if (enemiesInRange[i] != null)
+                    {
+                        enemiesInRange[i].TakeDamage(damageAmount, shouldKnockback);
+                    }
+                    else
+                    {
+                        enemiesInRange.RemoveAt(i);
+                        i--;
+                    }
+                }
+            }
+        }
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
