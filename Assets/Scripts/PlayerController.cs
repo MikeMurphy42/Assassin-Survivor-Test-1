@@ -51,7 +51,11 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
 
-        AddWeapon(Random.Range(0, unassignedWeapons.Count));
+        if (assignedWeapons.Count == 0)
+        {
+            AddWeapon(Random.Range(0, unassignedWeapons.Count));
+        }
+        
         
         
         foreach (Transform child in transform.GetComponentsInChildren<Transform>())
