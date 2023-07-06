@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7408126065157250430}
   - component: {fileID: 7408126065157250370}
   - component: {fileID: 6723401349625377324}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Red Mage
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -91,7 +91,9 @@ MonoBehaviour:
   hitWaitTime: 1
   health: 5
   knockBackTime: 0.5
+  expToGive: 1
   attackDistance: 1
+  attackCooldown: 2
 --- !u!114 &6723401349625377324
 MonoBehaviour:
   m_ObjectHideFlags: 0

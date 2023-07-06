@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2188103764316908980}
   - component: {fileID: 2188103764316908987}
   - component: {fileID: 3502999159217656656}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reaper-Black
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 4117413384559451651}
   - component: {fileID: 4306813749580057588}
   - component: {fileID: 5386699972236338914}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ReaperWizard-Blue
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -160,7 +160,9 @@ MonoBehaviour:
   hitWaitTime: 1
   health: 5
   knockBackTime: 0.5
+  expToGive: 1
   attackDistance: 1
+  attackCooldown: 2
 --- !u!70 &4306813749580057588
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -198,6 +200,9 @@ MonoBehaviour:
   maxSize: 1.5
   deathEffectPrefab: {fileID: 1037542503268038, guid: f35c52aa1abeb6b4b86e682039141b66, type: 3}
   useDeathAnimation: 1
+  useIdleAnimation: 1
+  useRunAnimation: 1
+  useAttackAnimation: 1
 --- !u!1001 &5023599206358518549
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4556928670175262744}
   - component: {fileID: 4556928670175262756}
   - component: {fileID: 8684658976000214835}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Round Bat
   m_TagString: Enemy
   m_Icon: {fileID: 0}

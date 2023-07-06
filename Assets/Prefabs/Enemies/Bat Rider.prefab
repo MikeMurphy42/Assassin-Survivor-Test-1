@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4194378678882660275}
   - component: {fileID: 4194378678882660239}
   - component: {fileID: 493173435}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Bat Rider
   m_TagString: Enemy
   m_Icon: {fileID: 0}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3009761935043594935}
   - component: {fileID: 3009761935043594936}
   - component: {fileID: 1745376482082553173}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Reaper-Blue
   m_TagString: Enemy
   m_Icon: {fileID: 0}
