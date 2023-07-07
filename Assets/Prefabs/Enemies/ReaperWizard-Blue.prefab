@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6370059005410848121}
   - component: {fileID: 2093827945458456121}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shadow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,6 +265,10 @@ PrefabInstance:
     - target: {fileID: 4035072858074177830, guid: e995300e1c81ddd42aaa24d7385e40f6, type: 3}
       propertyPath: m_Name
       value: Ghost_Wizard_Idle
+      objectReference: {fileID: 0}
+    - target: {fileID: 4035072858074177830, guid: e995300e1c81ddd42aaa24d7385e40f6, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4035072858074177831, guid: e995300e1c81ddd42aaa24d7385e40f6, type: 3}
       propertyPath: m_Enabled

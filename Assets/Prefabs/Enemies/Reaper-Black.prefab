@@ -129,7 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2278039854017823270}
   - component: {fileID: 8908268633132412268}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: shadow (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213,6 +213,10 @@ PrefabInstance:
     - target: {fileID: 6162610656125631956, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
       propertyPath: m_Name
       value: Ghost2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6162610656125631956, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6162610656125631958, guid: 842a9e8c163d4d94a90de7619ca8e9f4, type: 3}
       propertyPath: m_SortingLayer
