@@ -6,6 +6,7 @@ public class ProjectileWeapons2 : Weapon
 {
     public EnemyDamager damager;
     public Projectile projectile;
+    
 
     private float shotCounter;
     public float weaponRange;
@@ -25,6 +26,8 @@ public class ProjectileWeapons2 : Weapon
 
     void Update()
     {
+        
+        
         if (statsUpdated)
         {
             statsUpdated = false;
