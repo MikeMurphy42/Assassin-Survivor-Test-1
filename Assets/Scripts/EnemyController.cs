@@ -23,8 +23,11 @@ public class EnemyController : MonoBehaviour
     public float attackDistance = 1f;
     public float attackCooldown = 2f;
 
+    public float checkPlayerInterval = 1f; // Time interval to check for the player
+
     private bool isAttacking;
     private float attackTimer;
+    private float checkPlayerTimer; // Timer to track the interval between player checks
 
     private EnemyAnimator enemyAnimator;
     private SpriteRenderer spriteRenderer;
@@ -45,17 +48,11 @@ public class EnemyController : MonoBehaviour
     private void Start()
     {
         target = PlayerHealthController.instance.transform;
+        checkPlayerTimer = checkPlayerInterval; // Initialize the player check timer
     }
 
     private void Update()
     {
-        if (!PlayerHealthController.instance.gameObject.activeSelf)
-        {
-            // Player is disabled, disable the enemy
-            DisableEnemy();
-            return;
-        }
-
         if (knockBackCounter > 0)
         {
             knockBackCounter -= Time.deltaTime;
@@ -73,6 +70,21 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
+            // Update the player check timer
+            checkPlayerTimer -= Time.deltaTime;
+
+            if (checkPlayerTimer <= 0f)
+            {
+                // Reset the player check timer and check if the player is active
+                checkPlayerTimer = checkPlayerInterval;
+                if (!PlayerHealthController.instance.gameObject.activeSelf)
+                {
+                    // Player is disabled, disable the enemy
+                    DisableEnemy();
+                    return;
+                }
+            }
+
             theRB.velocity = (target.position - transform.position).normalized * moveSpeed;
 
             if (hitCounter > 0f)
