@@ -163,6 +163,7 @@ MonoBehaviour:
   expToGive: 1
   attackDistance: 1
   attackCooldown: 2
+  checkPlayerInterval: 1
 --- !u!70 &4306813749580057588
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

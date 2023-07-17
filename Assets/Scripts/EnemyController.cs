@@ -49,6 +49,13 @@ public class EnemyController : MonoBehaviour
 
     private void Update()
     {
+        if (!PlayerHealthController.instance.gameObject.activeSelf)
+        {
+            // Player is disabled, disable the enemy
+            DisableEnemy();
+            return;
+        }
+
         if (knockBackCounter > 0)
         {
             knockBackCounter -= Time.deltaTime;
@@ -57,51 +64,55 @@ public class EnemyController : MonoBehaviour
                 moveSpeed = -moveSpeed * 2f;
             }
 
+            theRB.velocity = (target.position - transform.position).normalized * moveSpeed;
+
             if (knockBackCounter <= 0)
             {
                 moveSpeed = Mathf.Abs(moveSpeed * .5f);
             }
         }
-
-        theRB.velocity = (target.position - transform.position).normalized * moveSpeed;
-
-        if (hitCounter > 0f)
+        else
         {
-            hitCounter -= Time.deltaTime;
-        }
+            theRB.velocity = (target.position - transform.position).normalized * moveSpeed;
 
-        float distanceToTarget = Vector2.Distance(transform.position, target.position);
-        enemyAnimator.SetAttackDistance(distanceToTarget <= attackDistance);
-        enemyAnimator.SetMoveSpeed(moveSpeed);
-
-        // Check if within attack distance and not currently attacking
-        if (distanceToTarget <= attackDistance && !isAttacking)
-        {
-            // Start attack
-            isAttacking = true;
-            attackTimer = attackCooldown;
-            Attack();
-        }
-
-        // Check attack cooldown timer
-        if (isAttacking)
-        {
-            attackTimer -= Time.deltaTime;
-            if (attackTimer <= 0f)
+            if (hitCounter > 0f)
             {
-                // Reset attack state
-                isAttacking = false;
+                hitCounter -= Time.deltaTime;
             }
-        }
 
-        // Flip sprite based on movement direction
-        if (theRB.velocity.x > 0)
-        {
-            spriteRenderer.flipX = false;
-        }
-        else if (theRB.velocity.x < 0)
-        {
-            spriteRenderer.flipX = true;
+            float distanceToTarget = Vector2.Distance(transform.position, target.position);
+            enemyAnimator.SetAttackDistance(distanceToTarget <= attackDistance);
+            enemyAnimator.SetMoveSpeed(moveSpeed);
+
+            // Check if within attack distance and not currently attacking
+            if (distanceToTarget <= attackDistance && !isAttacking)
+            {
+                // Start attack
+                isAttacking = true;
+                attackTimer = attackCooldown;
+                Attack();
+            }
+
+            // Check attack cooldown timer
+            if (isAttacking)
+            {
+                attackTimer -= Time.deltaTime;
+                if (attackTimer <= 0f)
+                {
+                    // Reset attack state
+                    isAttacking = false;
+                }
+            }
+
+            // Flip sprite based on movement direction
+            if (theRB.velocity.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+            else if (theRB.velocity.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
         }
     }
 
@@ -143,7 +154,7 @@ public class EnemyController : MonoBehaviour
 
         // Disable the enemy using the EnemyPooler script
         enemyPooler.DisableEnemy(gameObject);
-        
+
         ExperianceLevelController.instance.SpawnExp(transform.position, expToGive);
     }
 
@@ -153,4 +164,17 @@ public class EnemyController : MonoBehaviour
         // For example, deal damage to the player or trigger an attack animation
         PlayerHealthController.instance.TakeDamage(damage);
     }
+
+    private void DisableEnemy()
+    {
+        // Play death animation
+        enemyAnimator.PlayDeathAnimation();
+
+        // Spawn death effect
+        enemyAnimator.SpawnDeathEffect(transform.position);
+
+        // Disable the enemy using the EnemyPooler script
+        enemyPooler.DisableEnemy(gameObject);
+    }
+
 }

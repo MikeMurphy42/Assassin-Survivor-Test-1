@@ -93,8 +93,9 @@ MonoBehaviour:
   health: 5
   knockBackTime: 0.5
   expToGive: 1
-  attackDistance: 0.75
-  attackCooldown: 1.5
+  attackDistance: 0.85
+  attackCooldown: 1.25
+  checkPlayerInterval: 1
 --- !u!114 &493173435
 MonoBehaviour:
   m_ObjectHideFlags: 0

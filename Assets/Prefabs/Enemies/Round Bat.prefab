@@ -95,6 +95,7 @@ MonoBehaviour:
   expToGive: 1
   attackDistance: 1
   attackCooldown: 2
+  checkPlayerInterval: 1
 --- !u!114 &8684658976000214835
 MonoBehaviour:
   m_ObjectHideFlags: 0
