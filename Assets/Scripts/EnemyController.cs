@@ -20,6 +20,10 @@ public class EnemyController : MonoBehaviour
 
     public int expToGive = 1;
 
+    public int coinValue = 1;
+
+    public float coinDropRate = .5f;
+
     public float attackDistance = 1f;
     public float attackCooldown = 2f;
 
@@ -168,6 +172,12 @@ public class EnemyController : MonoBehaviour
         enemyPooler.DisableEnemy(gameObject);
 
         ExperianceLevelController.instance.SpawnExp(transform.position, expToGive);
+
+        if (Random.value <= coinDropRate)
+        {
+            CoinController.instance.DropCoin(transform.position, coinValue);
+        }
+        
     }
 
     private void Attack()
