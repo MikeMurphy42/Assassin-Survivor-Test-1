@@ -20,6 +20,8 @@ public class CoinController : MonoBehaviour
     public void AddCoins(int coinsToAdd)
     {
         currentCoins += coinsToAdd;
+        
+        UIController.instance.UpdateCoins();
     }
 
     public void DropCoin(Vector3 position, int value)
