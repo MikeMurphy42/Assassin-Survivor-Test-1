@@ -60,6 +60,12 @@ public class PlayerStatController : MonoBehaviour
     {
         
     }
+
+    public void UpdateDisplay()
+    {
+        
+    }
+    
 }
 
 [System.Serializable]

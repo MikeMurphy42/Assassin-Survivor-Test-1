@@ -94,5 +94,8 @@ public class ExperianceLevelController : MonoBehaviour
                 UIController.instance.LevelUpSelectionButtons[i].gameObject.SetActive(false);
             }
         }
+        
+        PlayerStatController.instance.UpdateDisplay();
+        
     }
 }
