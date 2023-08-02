@@ -24,9 +24,10 @@ public class UIController : MonoBehaviour
 
     public TMP_Text coinText;
 
-    public PlayerStatUpgradeDisplay moveSpeedUpgradeDisplay, healthUpgradeDisplay, pickupUpgradeDisplay, maxWeaponsUpgradeDisplay;
+    public PlayerStatUpgradeDisplay moveSpeedUpgradeDisplay, healthUpgradeDisplay, pickupRangeUpgradeDisplay, maxWeaponsUpgradeDisplay;
 
-    public int a, b;
+    //public int a, b;
+    
 
     // Start is called before the first frame update
     void Start()

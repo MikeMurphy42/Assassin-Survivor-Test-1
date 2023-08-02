@@ -10,7 +10,7 @@
 *.meta unityyaml
 *.unity filter=lfs diff=lfs merge=lfs -text
 *.asset filter=lfs diff=lfs merge=lfs -text
-*.prefab unityyaml
+*.prefab filter=lfs diff=lfs merge=lfs -text
 *.mat unityyaml
 *.anim unityyaml
 *.controller unityyaml
@@ -116,3 +116,4 @@
 *.rar lfs
 *.tar lfs filter=lfs diff=lfs merge=lfs -text
 *.pdf filter=lfs diff=lfs merge=lfs -text
+*.onnx filter=lfs diff=lfs merge=lfs -text
