@@ -26,6 +26,8 @@ public class UIController : MonoBehaviour
 
     public PlayerStatUpgradeDisplay moveSpeedUpgradeDisplay, healthUpgradeDisplay, pickupRangeUpgradeDisplay, maxWeaponsUpgradeDisplay;
 
+    public TMP_Text timerText;
+
     //public int a, b;
     
 
@@ -58,6 +60,34 @@ public class UIController : MonoBehaviour
     public void UpdateCoins()
     {
         coinText.text = "coins - " + CoinController.instance.currentCoins;
+    }
+    
+    public void PurchaseMoveSpeed()
+    {
+        PlayerStatController.instance.PurchaseMoveSpeed();
+    }
+    
+    public void PurchaseHealth()
+    {
+        PlayerStatController.instance.PurchaseHealth();
+    }
+    
+    public void PurchasePickUpRange()
+    {
+        PlayerStatController.instance.PurchasePickupRange();
+    }
+    
+    public void PurchaseMaxWeapons()
+    {
+        PlayerStatController.instance.PurchaseMaxWeapons();
+    }
+
+    public void UpdateTimer(float time)
+    {
+        float minutes = Mathf.FloorToInt(time / 60f);
+        float seconds = Mathf.FloorToInt(time % 60f);
+
+        timerText.text = "Time: " + minutes + ":" + seconds.ToString("00");
     }
     
 }
