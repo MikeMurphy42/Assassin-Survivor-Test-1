@@ -15,7 +15,11 @@ public class PlayerHealthController : MonoBehaviour
     }
 
     public float currentHealth, maxHealth;
+    
     public Slider healthSlider;
+
+    public GameObject deathEffect;
+    
     private PlayerController playerController;
     
     // Start is called before the first frame update
@@ -47,6 +51,10 @@ public class PlayerHealthController : MonoBehaviour
             if (currentHealth <= 0)
             {
                 gameObject.SetActive(false);
+                
+                LevelManager.instance.EndLVL();
+
+                Instantiate(deathEffect, transform.position, transform.rotation);
             }
 
             healthSlider.value = currentHealth;
