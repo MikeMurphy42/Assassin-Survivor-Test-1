@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class UIController : MonoBehaviour
 {
@@ -27,6 +28,11 @@ public class UIController : MonoBehaviour
     public PlayerStatUpgradeDisplay moveSpeedUpgradeDisplay, healthUpgradeDisplay, pickupRangeUpgradeDisplay, maxWeaponsUpgradeDisplay;
 
     public TMP_Text timerText;
+    
+    public GameObject levelEndScreen;
+    public TMP_Text endTimeText;
+    
+    
 
     //public int a, b;
     
@@ -88,6 +94,16 @@ public class UIController : MonoBehaviour
         float seconds = Mathf.FloorToInt(time % 60f);
 
         timerText.text = "Time: " + minutes + ":" + seconds.ToString("00");
+    }
+
+    public void GoToMainMenu()
+    {
+        
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     
 }
