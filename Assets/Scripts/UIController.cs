@@ -1,14 +1,11 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIController : MonoBehaviour
 {
-
     public static UIController instance;
 
     private void Awake()
@@ -18,24 +15,15 @@ public class UIController : MonoBehaviour
 
     public Slider expLvlSlider;
     public TMP_Text expLvlText;
-
     public LevelUpSelectionButton[] LevelUpSelectionButtons;
-
     public GameObject levelUpPanel;
-
-    public TMP_Text coinText;
-
+    public TMP_Text coinText; // For main screen
+    public TMP_Text upgradeCoinText; // For upgrade screen
     public PlayerStatUpgradeDisplay moveSpeedUpgradeDisplay, healthUpgradeDisplay, pickupRangeUpgradeDisplay, maxWeaponsUpgradeDisplay;
-
     public TMP_Text timerText;
-    
     public GameObject levelEndScreen;
     public TMP_Text endTimeText;
-    
-    
-
-    //public int a, b;
-    
+    public string mainMenuName;
 
     // Start is called before the first frame update
     void Start()
@@ -53,7 +41,6 @@ public class UIController : MonoBehaviour
     {
         expLvlSlider.maxValue = levelExp;
         expLvlSlider.value = currentExp;
-
         expLvlText.text = "LVL - " + currentLvl;
     }
 
@@ -65,24 +52,26 @@ public class UIController : MonoBehaviour
 
     public void UpdateCoins()
     {
-        coinText.text = "coins - " + CoinController.instance.currentCoins;
+        string coinsDisplay = "coins - " + CoinController.instance.currentCoins;
+        coinText.text = coinsDisplay; // Update main screen
+        upgradeCoinText.text = coinsDisplay; // Update upgrade screen
     }
-    
+
     public void PurchaseMoveSpeed()
     {
         PlayerStatController.instance.PurchaseMoveSpeed();
     }
-    
+
     public void PurchaseHealth()
     {
         PlayerStatController.instance.PurchaseHealth();
     }
-    
+
     public void PurchasePickUpRange()
     {
         PlayerStatController.instance.PurchasePickupRange();
     }
-    
+
     public void PurchaseMaxWeapons()
     {
         PlayerStatController.instance.PurchaseMaxWeapons();
@@ -92,18 +81,16 @@ public class UIController : MonoBehaviour
     {
         float minutes = Mathf.FloorToInt(time / 60f);
         float seconds = Mathf.FloorToInt(time % 60f);
-
         timerText.text = "Time: " + minutes + ":" + seconds.ToString("00");
     }
 
     public void GoToMainMenu()
     {
-        
+        SceneManager.LoadScene(mainMenuName);
     }
 
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
-    
 }
