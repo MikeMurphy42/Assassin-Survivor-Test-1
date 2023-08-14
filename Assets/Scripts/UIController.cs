@@ -133,9 +133,12 @@ public class UIController : MonoBehaviour
         else
         {
             pauseScreen.SetActive(false);
-            isTimeScaleTransitioning = true; // Start the timescale transition
-            timeScaleTransitionTimer = 0f; // Reset the transition timer
-            Invoke("StartTransition", timeScaleDelay); // Start transition after specified delay
+            if (levelUpPanel.activeSelf == false)
+            {
+                isTimeScaleTransitioning = true; // Start the timescale transition
+                timeScaleTransitionTimer = 0f; // Reset the transition timer
+                Invoke("StartTransition", timeScaleDelay); // Start transition after specified delay
+            }
         }
     }
     
