@@ -10,6 +10,7 @@ public class MainMenu : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene(firstLevelName);
+        Time.timeScale = 1f;
     }
 
     public void Options()

@@ -7,12 +7,6 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     public static UIController instance;
-
-    private void Awake()
-    {
-        instance = this;
-    }
-
     public Slider expLvlSlider;
     public TMP_Text expLvlText;
     public LevelUpSelectionButton[] LevelUpSelectionButtons;
@@ -26,10 +20,21 @@ public class UIController : MonoBehaviour
     public string mainMenuName;
     public GameObject pauseScreen;
 
+    public float timeScaleDelay = 0f; // Delay before timescale change starts
+    public float timeScaleDuration = 1f; // Duration of the timescale transition
+
+    private bool isTimeScaleTransitioning = false; // Track whether the timescale transition is happening
+    private float timeScaleTransitionTimer = 0f; // Timer for the timescale transition
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -38,6 +43,18 @@ public class UIController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             PauseUnpause();
+        }
+
+        if (isTimeScaleTransitioning)
+        {
+            timeScaleTransitionTimer += Time.unscaledDeltaTime; // Increment timer by real-world delta time
+            Time.timeScale = Mathf.Lerp(0f, 1f, timeScaleTransitionTimer / timeScaleDuration); // Lerp timescale
+
+            if (timeScaleTransitionTimer >= timeScaleDuration)
+            {
+                isTimeScaleTransitioning = false; // Stop the transition
+                Time.timeScale = 1f; // Ensure timescale is set to 1
+            }
         }
     }
 
@@ -51,7 +68,8 @@ public class UIController : MonoBehaviour
     public void SkipLVLUp()
     {
         levelUpPanel.SetActive(false);
-        Time.timeScale = 1f;
+        StartSkipLevelTransition();
+        //StartTransition(); // Start the timescale transition
     }
 
     public void UpdateCoins()
@@ -96,6 +114,7 @@ public class UIController : MonoBehaviour
     public void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        Time.timeScale = 1f;
     }
 
     public void QuitGame()
@@ -109,12 +128,27 @@ public class UIController : MonoBehaviour
         {
             pauseScreen.SetActive(true);
             Time.timeScale = 0f;
+            isTimeScaleTransitioning = false; // Stop any ongoing transition
         }
         else
         {
             pauseScreen.SetActive(false);
-            Time.timeScale = 1f;
+            isTimeScaleTransitioning = true; // Start the timescale transition
+            timeScaleTransitionTimer = 0f; // Reset the transition timer
+            Invoke("StartTransition", timeScaleDelay); // Start transition after specified delay
         }
-        
+    }
+    
+    public void StartSkipLevelTransition()
+    {
+        isTimeScaleTransitioning = true; // Start the timescale transition
+        timeScaleTransitionTimer = 0f; // Reset the transition timer
+        Invoke("StartTransition", timeScaleDelay); // Start transition after specified delay
+    }
+
+
+    public void StartTransition()
+    {
+        isTimeScaleTransitioning = true;
     }
 }
