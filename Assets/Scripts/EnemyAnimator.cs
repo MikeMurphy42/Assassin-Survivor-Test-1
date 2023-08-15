@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
 
 public class EnemyAnimator : MonoBehaviour
 {
     public Animator animator;
     public Transform sprite;
-    public AudioClip deathSound; // Reference to the death sound clip
-    public AudioMixerGroup audioMixerGroup; // Reference to the audio mixer group
+
     public float speed;
 
     // These variables will be editable in the inspector
@@ -23,16 +21,14 @@ public class EnemyAnimator : MonoBehaviour
     public bool useRunAnimation = true;
     public bool useAttackAnimation = true;
 
-    private AudioSource audioSource; // Reference to the AudioSource component
     private float activeSize;
 
     // Start is called before the first frame update
     void Start()
     {
         activeSize = maxSize;
+
         speed = speed * Random.Range(minSpeedFactor, maxSpeedFactor);
-        audioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource component
-        audioSource.outputAudioMixerGroup = audioMixerGroup; // Set the output to the specified Audio Mixer Group
     }
 
     // Update is called once per frame
@@ -62,16 +58,6 @@ public class EnemyAnimator : MonoBehaviour
         animator.SetBool("WithinAttackDistance", withinDistance);
     }
 
-    // Function to play death sound
-    private void PlayDeathSound()
-    {
-        if (deathSound != null && audioSource != null)
-        {
-            audioSource.clip = deathSound;
-            audioSource.Play();
-        }
-    }
-
     public void PlayDeathAnimation()
     {
         if (useDeathAnimation)
@@ -82,7 +68,6 @@ public class EnemyAnimator : MonoBehaviour
         {
             GameObject deathEffect = Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
             Destroy(deathEffect, 2f);
-            PlayDeathSound(); // Play death sound when using the death effect prefab
         }
     }
 
@@ -117,11 +102,5 @@ public class EnemyAnimator : MonoBehaviour
         {
             animator.SetBool("Attack", active);
         }
-    }
-
-    // Function that gets called when the object gets disabled
-    private void OnDisable()
-    {
-        PlayDeathSound(); // Play death sound when the object gets disabled
     }
 }
