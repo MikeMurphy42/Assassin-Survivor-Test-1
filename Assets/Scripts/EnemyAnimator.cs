@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class EnemyAnimator : MonoBehaviour
 {
     public Animator animator;
     public Transform sprite;
     public AudioClip deathSound; // Reference to the death sound clip
+    public AudioMixerGroup audioMixerGroup; // Reference to the audio mixer group
     public float speed;
 
     // These variables will be editable in the inspector
@@ -30,6 +32,7 @@ public class EnemyAnimator : MonoBehaviour
         activeSize = maxSize;
         speed = speed * Random.Range(minSpeedFactor, maxSpeedFactor);
         audioSource = gameObject.AddComponent<AudioSource>(); // Add AudioSource component
+        audioSource.outputAudioMixerGroup = audioMixerGroup; // Set the output to the specified Audio Mixer Group
     }
 
     // Update is called once per frame
