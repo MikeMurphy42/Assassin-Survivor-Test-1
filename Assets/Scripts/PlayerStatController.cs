@@ -128,8 +128,22 @@ public class PlayerStatController : MonoBehaviour
 
         PlayerHealthController.instance.maxHealth = health[healthLevel].value;
         PlayerHealthController.instance.currentHealth = PlayerHealthController.instance.maxHealth;
-        //PlayerHealthController.instance.currentHealth += health[healthLevel].value - health[healthLevel - 1].value;
+
+        // Update the health slider values
+        PlayerHealthController.instance.healthSlider.maxValue = PlayerHealthController.instance.maxHealth;
+        PlayerHealthController.instance.healthSlider.value = PlayerHealthController.instance.currentHealth;
     }
+    
+    /*public void PurchaseHealth()
+    {
+        healthLevel++;
+        CoinController.instance.SpendCoins(health[healthLevel].cost);
+        UpdateDisplay();
+
+        PlayerHealthController.instance.maxHealth = health[healthLevel].value;
+        PlayerHealthController.instance.currentHealth = PlayerHealthController.instance.maxHealth;
+        //PlayerHealthController.instance.currentHealth += health[healthLevel].value - health[healthLevel - 1].value;
+    }*/
     
     public void PurchasePickupRange()
     {
